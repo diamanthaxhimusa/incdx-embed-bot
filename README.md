@@ -1,2 +1,2 @@
-# incodeks-embed-bot
+# Embed bot
 Embed Bot
