@@ -15,20 +15,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,300&amp;subset=latin,cyrillic" rel="stylesheet"
     type="text/css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Extended" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/fontawesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      min-height: 100vh;
+    }
+    .incdx-bot {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>hello world</h1>
-        <script src="./incdx-bot.js"></script>
-        <script>
-            incodeksBot.init({
-              userToken: "",
-              microphone: true,
-              messageColor: "blue",
-              textColor: "white"
-            });
-        </script>
+  <br>
+  <h1>INCDX BOT</h1>
+  <script src="./incdx-bot.js"></script>
+  <script>
+      incodeksBot.init({
+        userToken: "",
+        microphone: true,
+        botMessageBackground: "#2b303e",
+        primaryFontColor: "#fff",
+        accentColor: ""
+      });
+  </script>
 </body>
 </html>
