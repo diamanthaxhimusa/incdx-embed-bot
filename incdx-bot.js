@@ -30,7 +30,9 @@ var incodeksBot = (function () {
 
 	// Create the methods object
   var methods = {};
-  
+  var incdxBotWrapper = document.getElementById("incdx-bot-wrapper");
+  var queryInput = document.getElementById('incdx-bot-query');
+  var openBotButton = document.getElementById('incdx-bot-open');
   /**
    * Init Bot
    * @function
@@ -62,7 +64,6 @@ var incodeksBot = (function () {
       botMic.classList.add("hidden");
     }
     // Add Event Listener on button to open the Bot popup
-    var openBotButton = document.getElementById('incdx-bot-open');
     openBotButton.addEventListener("click", openBot);
 
     var form = document.getElementById('incdx-bot-form');
@@ -70,7 +71,7 @@ var incodeksBot = (function () {
       e.preventDefault();
       var formData = new FormData(e.target);
       var message = formData.get("q");
-      if (message) {
+      if (message && message.trim().length) {
         sendMessage(message);
       }
     });
@@ -132,13 +133,23 @@ var incodeksBot = (function () {
   }
 
   var openBot = function() {
-    var incdxBotWrapper = document.getElementById("incdx-bot-wrapper");
     incdxBotWrapper.classList.toggle("bot-hidden");
-    var queryInput = document.getElementById('incdx-bot-query');
     if (!this.classList.contains("close-bot")) {
+      console.log('focus')
       queryInput.focus();
+      queryInput.addEventListener('keyup', function(e) {
+        if (e.keyCode === 27) {
+          closeBot()
+        }
+      });
     }
     this.classList.toggle("close-bot");
+  }
+
+  var closeBot = function() {
+    queryInput.blur();
+    incdxBotWrapper.classList.add("bot-hidden");
+    openBotButton.classList.remove("close-bot");
   }
 
   /*
@@ -152,7 +163,7 @@ var incodeksBot = (function () {
     var botResultContainer = document.getElementById("incdx-result");
     var botLoadingContainer = document.getElementById("incdx-w-l");
     var resultWrapper = document.getElementById("resultWrapper");
-    var qInput = document.getElementById("incdx-bot-query");
+    var qInput = queryInput;
 
     // create user mesasage content and display it to chat
     var userMessage = document.createElement("div");
