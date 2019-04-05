@@ -1,9 +1,3 @@
-/**
- * Embed Bot
- * (c) 2019 Diamant Haxhimusa
- * @version 0.6.1
- */
-
 window['addStyleString'] = function(str) {
   var node = document.createElement('style');
   node.innerHTML = str;
@@ -15,17 +9,8 @@ window['addHtmlString'] = function(str) {
   document.body.appendChild(node);
 };
 /**
- * @name EmbedBot
- * @constructor
- * @returns {Object} incdxBotPublicMethods   public functions
- * @public
- * @example
- * incdxBot.init({
- *   userToken: "",
- *   microphone: true,
- *   messageColor: "blue",
- *   textColor: "white"
- * });
+ * Embed Bot
+ * (c) 2019 Diamant Haxhimusa
  */
 var incdxBot = (function () {
 	'use strict';
@@ -37,12 +22,19 @@ var incdxBot = (function () {
   var queryInput;
   var openBotButton;
   /**
-   * Init Bot
-   * @function
+   * @function init
+   * @public
    * @param {Object}  options                         Options of BOT
-   * @param {Boolean} [options.microphone=true]       Use the microphone          [optional]
-   * @param {String}  [options.messageColor=#a5d175]  Color of the messsage box   [optional]
-   * @param {String}  [options.textColor=#fff]        Color of the meesage text   [optional]
+   * @param {Boolean} [options.microphone=true]       Use the microphone
+   * @param {string}  [options.messageColor=#a5d175]  Color of the messsage box
+   * @param {string}  [options.textColor=#fff]        Color of the meesage text
+   * @example
+   * incdxBot.init({
+   *   userToken: "",
+   *   microphone: true,
+   *   messageColor: "blue",
+   *   textColor: "white"
+   * });
    */
   incdxBotPublicMethods.init = function(options) {
     window.incdxOptions = options;
@@ -156,8 +148,9 @@ var incdxBot = (function () {
   }
 
   /**
-   * Send Message
-   * @param {String} message    Message that we send to bot to get intents back and create answers
+   * @private
+   * @function sendMessage
+   * @param {string} message Message that we send to bot to get intents back and create answers
    */
   var sendMessage = function (message) {
     // test url http://localhost:5000/listselectionsample/us-central1/botFunction
@@ -224,9 +217,11 @@ var incdxBot = (function () {
       });
   }
 
+  
   /**
-   * Requests
-   * @param {String} url    Request url
+   * @private
+   * @function incdxRequest
+   * @param {string} url    Request url
    * @param {Object} body   Requst body
    * @return {Promise}      The callback promise
    */
@@ -250,7 +245,7 @@ var incdxBot = (function () {
     });
   }
 
-  /**
+  /*
    * Generator
    * The conversation is detailed below for a specific message oneof:
    * * Generic Platform Response
@@ -269,11 +264,11 @@ var incdxBot = (function () {
    */
 
   /**
+   * @private
    * @function generator.text
    * @name text
    * @param {Object} fulfillmentMessage Fulfillment Message from Dialogfow
    * @returns {Node} textResponsesNode
-   * @private
   */
   generator.text = (fulfillmentMessage) => {
     var messageTexts = fulfillmentMessage.text.text;
@@ -290,12 +285,13 @@ var incdxBot = (function () {
     `;
     return textResponsesNode;
   }
+
   /**
+   * @private
    * @function generator.simpleResponses
    * @name simpleResponses
    * @param {Object} fulfillmentMessage Fulfillment Message from Dialogfow
    * @returns {Node} simpleResponsesNode
-   * @private
    */
   generator.simpleResponses = (fulfillmentMessage) => {
     var simpleResponses = fulfillmentMessage.simpleResponses.simpleResponses;
@@ -312,12 +308,13 @@ var incdxBot = (function () {
     `;
     return simpleResponsesNode;
   }
+
   /**
+   * @private
    * @function generator.basicCard
    * @name basicCard
    * @param {Object} fulfillmentMessage Fulfillment Message from Dialogfow
    * @returns {Node} basicCardNode
-   * @private
    */
   generator.basicCard = (fulfillmentMessage) => {
     var basicCard = fulfillmentMessage.basicCard;
@@ -334,12 +331,13 @@ var incdxBot = (function () {
     `;
     return basicCardNode;
   }
+
   /**
+   * @private
    * @function generator.listSelect
    * @name listSelect
    * @param {Object} fulfillmentMessage Fulfillment Message from Dialogfow
    * @returns {Node} listSelectNode
-   * @private
    */
   generator.listSelect = (fulfillmentMessage) => {
     var listSelect = fulfillmentMessage.listSelect;
@@ -364,12 +362,13 @@ var incdxBot = (function () {
     });
     return listSelectNode;
   }
+
   /**
+   * @private
    * @function generator.suggestions
-   * @name basig
+   * @name suggestions
    * @param {Object} fulfillmentMessage Fulfillment Message from Dialogfow
    * @returns {Node} suggestionsNode
-   * @private
    */
   generator.suggestions = (fulfillmentMessage) => {
     var suggestions = fulfillmentMessage.suggestions.suggestions;
@@ -377,12 +376,13 @@ var incdxBot = (function () {
     // TODO
     return suggestionsNode;
   }
+
   /**
+   * @private
    * @function generator.linkOutSuggestion
    * @name linkOutSuggestion
    * @param {Object} fulfillmentMessage Fulfillment Message from Dialogfow
    * @returns {Node} linkOutSuggestionNode
-   * @private
    */
   generator.linkOutSuggestion = (fulfillmentMessage) => {
     var linkOutSuggestion = fulfillmentMessage.linkOutSuggestion;
@@ -390,12 +390,13 @@ var incdxBot = (function () {
     // TODO
     return linkOutSuggestionNode;
   }
+
   /**
+   * @private
    * @function generator.carouselSelect
    * @name carouselSelect
    * @param {Object} fulfillmentMessage Fulfillment Message from Dialogfow
    * @returns {Node} carouselSelectNode
-   * @private
    */
   generator.carouselSelect = (fulfillmentMessage) => {
     var carouselSelect = fulfillmentMessage.carouselSelect;
@@ -403,13 +404,13 @@ var incdxBot = (function () {
     // TODO
     return carouselSelectNode;
   }
+
   /**
+   * @private
    * @function generator.payload
    * @name payload
-   * @name basig
    * @param {Object} fulfillmentMessage Fulfillment Message from Dialogfow
    * @returns {Node} payloadNode
-   * @private
    */
   generator.payload = (fulfillmentMessage) => {
     var payload = fulfillmentMessage.payload;
