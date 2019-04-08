@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
   <meta name="referrer" content="no-referrer">
   <title>ListselectionSample</title>
@@ -27,22 +25,226 @@
     .incdx-bot {
       font-family: 'Roboto', sans-serif;
     }
+    .container {
+      display: flex;
+      flex-direction: column
+    }
+    .code {
+      background: #f1f1f1;
+      padding: 10px;
+      margin: 0;
+      position: relative;
+    }
+    .bot-options {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .bot-options label {
+      width: 120px;
+    }
+    .bot-options input {
+      width: 70px
+    }
+    .string {
+      color: #d6a10e;
+    }
+    .tooltip {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 140px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 150%;
+      left: 50%;
+      margin-left: -75px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .tooltip .tooltiptext::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #555 transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
   </style>
 </head>
-
 <body>
-  <br>
-  <h1>INCDX BOT</h1>
+  <div class="container">
+    <h1>INCDX BOT</h1>
+    <div class="bot-configurations">
+      <h3>Bot configurations:</h3>
+      <div class="bot-options">
+        <label for="primary-color">Primary Color:</label>
+        <input class="input-color" type="color" data-color="primary" id="primary-color" name="primary-color" value="#FFFF00">
+      </div>
+      <div class="bot-options">
+        <label for="dark-color">Dark Color:</label>
+        <input class="input-color" type="color" data-color="dark" id="dark-color" name="dark-color" value="#FFD600">
+      </div>
+      <div class="bot-options">
+        <label for="light-color">Light Color:</label>
+        <input class="input-color" type="color" data-color="light" id="light-color" name="light-color" value="#FFFF8D">
+      </div>
+      <div class="bot-options">
+        <label for="font-color">Font Color:</label>
+        <input class="input-color" type="color" data-color="font" id="font-color" name="font-color" value="#111">
+      </div>
+    </div>
+    <h3>Code:</h3>
+    <div class="code">
+      <div style="white-space: pre-line" id="code">incdxBot.init({
+        &nbsp; microphone: <span style="color:blue">true</span>,
+        &nbsp; primaryColor: <span class="string">"#FFFF00"</span>,
+        &nbsp; darkColor: <span class="string">"#FFD600"</span>,
+        &nbsp; lightColor: <span class="string">"#FFFF8D"</span>,
+        &nbsp; fontColor: <span class="string">"#111"</span>
+        });
+      </div>
+      <div class="tooltip">
+        <button onclick="myFunction()" onmouseout="outFunc()">
+            <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+            Copy text
+            </button>
+        </button>
+      </div>
+    </div>
+  <style>
+    .incdx-message-server-response {
+      /* primary */
+      background-color: white;
+    }
+    .incdx-bot#incdx-bot-wrapper, #incdx-bot-open {
+      /* font */
+      color: white;
+    }
+    .incdx-bot_header, #incdx-bot-open {
+      /* dark */
+      background-color: white;
+    }
+    .incdx-list-select .incdx-list-select-item {
+      border-color: white;
+    }
+    .incdx-basic-card-button > button {
+      background-color: white;
+    }
+  </style>
   <script src="./incdx-bot.js"></script>
   <script>
       incdxBot.init({
-        userToken: "",
         microphone: true,
         fontColor: "#111",
         primaryColor: "#FFFF00",
         darkColor: "#FFD600",
         lightColor: "#FFFF8D",
       });
+  </script>
+  <script>
+    function myFunction() {
+      if (document.selection) { // IE
+        var range = document.body.createTextRange();
+        range.moveToElementText(document.getElementById("code"));
+        range.select();
+      } else if (window.getSelection) {
+        var range = document.createRange();
+        range.selectNode(document.getElementById("code"));
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+      }
+      document.execCommand("copy");
+      
+      var tooltip = document.getElementById("myTooltip");
+      tooltip.innerHTML = "Copied!";
+    }
+
+    function outFunc() {
+      var tooltip = document.getElementById("myTooltip");
+      tooltip.innerHTML = "Copy to clipboard";
+    }
+    function changeStylesheetRule(stylesheet, selector, property, value) {
+      // Make the strings lowercase
+      selector = selector.toLowerCase();
+      property = property.toLowerCase();
+      value = value.toLowerCase();
+
+      // Change it if it exists
+      for(var i = 0; i < stylesheet.cssRules.length; i++) {
+          var rule = stylesheet.cssRules[i];
+          if(rule.selectorText === selector) {
+            stylesheet.deleteRule(i);
+            stylesheet.insertRule(selector + " { " + property + ": " + value + "!important; }", 0);
+            return;
+          }
+      }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+      var sheets = document.styleSheets;
+      var sheet = sheets[sheets.length-1];
+      var colorInputs = document.getElementsByClassName("input-color");
+      for (let colorInput of colorInputs) {
+        colorInput.onchange = function() {
+          var inputData = this.dataset;
+          var inputValue = this.value;
+          var primary = window.primary || window.incdxOptions.primaryColor;
+          var dark = window.dark || window.incdxOptions.darkColor;
+          var light = window.light || window.incdxOptions.lightColor;
+          var font = window.font || window.incdxOptions.fontColor;
+          switch (inputData.color) {
+            case "primary":
+              primary = inputValue;
+              window.primary = inputValue;
+              changeStylesheetRule(sheet, ".incdx-message-server-response", "background-color", inputValue);
+              break;
+            case "light":
+              light = inputValue;
+              window.light = inputValue;
+              changeStylesheetRule(sheet, ".incdx-list-select .incdx-list-select-item", "border-color", inputValue);
+              changeStylesheetRule(sheet, ".incdx-basic-card-button > button", "background-color", inputValue);
+              break;
+              case "dark":
+              dark = inputValue;
+              window.dark = inputValue;
+              changeStylesheetRule(sheet, ".incdx-bot_header, #incdx-bot-open", "background-color", inputValue);
+              break;
+            case "font":
+              font = inputValue;
+              window.font = inputValue;
+              changeStylesheetRule(sheet, ".incdx-bot#incdx-bot-wrapper, #incdx-bot-open", "color", inputValue);
+              break;
+          }
+          var str = `incdxBot.init({
+            \xa0\xa0microphone: <span style="color:blue">true</span>,
+            \xa0\xa0primaryColor: <span class="string">"${primary}"</span>,
+            \xa0\xa0darkColor: <span class="string">"${dark}"</span>,
+            \xa0\xa0lightColor: <span class="string">"${light}"</span>,
+            \xa0\xa0fontColor: <span class="string">"${font}"</span>
+          });`;
+          var code = document.getElementById("code");
+          code.innerHTML = str;
+        };
+      }
+    })
   </script>
 </body>
 </html>
