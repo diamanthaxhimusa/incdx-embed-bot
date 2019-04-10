@@ -500,7 +500,7 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     width: 100%;
 }
 .incdx-message-server-carousel .incdx-carousel-select .incdx-carousel-select-item {
-    color: #fff;
+    color: inherit;
     display: flex;
     flex-direction: row;
     flex-grow: 1;
@@ -510,7 +510,7 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     padding: 16px;
     flex: 1 1 100%;
     align-items: center;
-    background-color: #3e4454;
+    background-color: #3e4454;/*primary*/
     margin-right: 8px;
     margin-top: 8px;
     border-radius: 3px;

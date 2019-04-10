@@ -138,7 +138,7 @@
     }
     .incdx-bot#incdx-bot-wrapper, #incdx-bot-open {
       /* font */
-      color: white;
+      /* color: white; */
     }
     .incdx-bot_header, #incdx-bot-open {
       /* dark */
@@ -146,6 +146,9 @@
     }
     .incdx-list-select .incdx-list-select-item {
       border-color: white;
+    }
+    .incdx-carousel-select-item {
+      background-color: white;
     }
     .incdx-basic-card-button > button {
       background-color: white;
@@ -218,6 +221,7 @@
             case "primary":
               primary = inputValue;
               window.primary = inputValue;
+              changeStylesheetRule(sheet, ".incdx-carousel-select-item", "background-color", inputValue);
               changeStylesheetRule(sheet, ".incdx-message-server-response", "background-color", inputValue);
               break;
             case "light":
