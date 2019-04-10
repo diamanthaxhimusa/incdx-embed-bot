@@ -146,6 +146,7 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     display: table-cell;
     margin: 0 !important;
     padding: 0 !important;
+    max-width: 355px;
 }
 .incdx-bot .incdx-bot_result-table {
     height: 100%;
@@ -462,7 +463,7 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     margin-bottom: 10px;
 }
 .incdx-suggestions-chips .incdx-chip-container{
-    display: inline-block;
+    display: flex;
     margin-right: 8px;
     margin-top: 8px;
 }
@@ -486,6 +487,53 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     min-width: 60px;
     outline: none !important;
     background-color: #676f84;/*light*/
+}
+/* CAROUSEL */
+.incdx-message-server-carousel {
+    clear: both;
+    width: 100%;
+}
+.incdx-message-server-carousel .incdx-carousel-select {
+    display: inline-flex;
+    flex-direction: row;
+    overflow-x: auto;
+    width: 100%;
+}
+.incdx-message-server-carousel .incdx-carousel-select .incdx-carousel-select-item {
+    color: #fff;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    min-width: 237px;
+    height: 140px;
+    flex-wrap: nowrap;
+    padding: 16px;
+    flex: 1 1 100%;
+    align-items: center;
+    background-color: #3e4454;
+    margin-right: 8px;
+    margin-top: 8px;
+    border-radius: 3px;
+    border: 1px solid #eee;
+    cursor: pointer;
+}
+.incdx-message-server-carousel .incdx-carousel-select .incdx-carousel-select-item .incdx-carousel-select-item-image {
+    width: 100px;
+    height: 100px;
+}
+
+.incdx-message-server-carousel .incdx-carousel-select .incdx-carousel-select-item .incdx-carousel-select-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.incdx-message-server-carousel .incdx-carousel-select .incdx-carousel-select-item span.incdx-carousel-select-item-description {
+    max-height: 100px;
+    overflow: auto;
+}
+
+.incdx-message-server-carousel .incdx-carousel-select .incdx-carousel-select-item .incdx-carousel-select-item-title {
+    margin-bottom: 10px;
 }
 /* END INCDX RESPONSES */
 /* Layout */
@@ -522,4 +570,3 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     font-size: 1.5em;
     margin: 10px 0;
 }
-

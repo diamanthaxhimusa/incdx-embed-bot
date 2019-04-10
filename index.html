@@ -150,6 +150,9 @@
     .incdx-basic-card-button > button {
       background-color: white;
     }
+    .incdx-suggestions-chips .incdx-chip {
+      background-color: white;
+    }
   </style>
   <script src="./incdx-bot.js"></script>
   <script>
@@ -220,6 +223,7 @@
             case "light":
               light = inputValue;
               window.light = inputValue;
+              changeStylesheetRule(sheet, ".incdx-suggestions-chips .incdx-chip", "background-color", inputValue);
               changeStylesheetRule(sheet, ".incdx-list-select .incdx-list-select-item", "border-color", inputValue);
               changeStylesheetRule(sheet, ".incdx-basic-card-button > button", "background-color", inputValue);
               break;

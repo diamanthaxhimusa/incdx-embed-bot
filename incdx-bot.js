@@ -161,7 +161,6 @@ var incdxBot = (function () {
     var botResultContainer = document.getElementById("incdx-result");
     var botLoadingContainer = document.getElementById("incdx-w-l");
     var resultWrapper = document.getElementById("resultWrapper");
-    var qInput = queryInput;
 
     // create user mesasage content and display it to chat
     var userMessage = document.createElement("div");
@@ -170,7 +169,7 @@ var incdxBot = (function () {
     botResultContainer.appendChild(userMessage);
 
     // clear input
-    qInput.value = "";
+    queryInput.value = "";
 
     // create bot mesasage content and display it to chat
     console.log(botLoadingContainer.querySelector("#incdx-loading-message"))
@@ -204,8 +203,17 @@ var incdxBot = (function () {
         data.fulfillmentMessages.forEach(fulfillmentMessage => {
           console.log('fulfillmentMessage', fulfillmentMessage)
           var type = fulfillmentMessage.message;
-          var nodeToAppend = generator[type](fulfillmentMessage, botMessage);
-          if (nodeToAppend)botMessage.appendChild(nodeToAppend);
+          var nodeToAppend;
+          if (type == "carouselSelect") {
+            nodeToAppend = generator[type](fulfillmentMessage, botMessage);
+            var botCarouselMessage = document.createElement("div");
+            botCarouselMessage.classList.add("incdx-message-server-carousel");
+            botCarouselMessage.appendChild(nodeToAppend);
+            botResultContainer.appendChild(botCarouselMessage);
+          } else {
+            nodeToAppend = generator[type](fulfillmentMessage, botMessage);
+            if (nodeToAppend)botMessage.appendChild(nodeToAppend);
+          }
         });
         resultWrapper.scrollTop = resultWrapper.scrollHeight;
       })
@@ -246,6 +254,10 @@ var incdxBot = (function () {
       var data = JSON.stringify(body)
       request.send(data);
     });
+  }
+
+  var incdxSelectableEvent = function() {
+    sendMessage(this.dataset.incdxSelect);
   }
 
   /*
@@ -348,20 +360,23 @@ var incdxBot = (function () {
     listSelectNode.classList.add("incdx-list-select");
     listSelectNode.innerHTML = `<h2 class="incdx-list-select-title">${listSelect.title}</h2>`;
     listSelect.items.forEach(listItem => {
-      listSelectNode.innerHTML += `
-        <div class="incdx-list-select-item">
-          <div class="incdx-layout-row incdx-flex">
-            <div class="incdx-list-select-item-text incdx-layout-column incdx-flex-70">
-              <div class="incdx-list-select-item-title">${listItem.title}</div>
-              ${listItem.description.length ? `<span class="incdx-list-select-item-description">${listItem.description}</span>` : ""}
-            </div>
-            <div class="incdx-flex"></div>
-            <div class="incdx-list-select-item-image">
-              ${listItem.image.imageUri.length ? `<img src="${listItem.image.imageUri} alt="${listItem.image.accessibilityText}" >` : ""}
-            </div>
+      var listItemNode = document.createElement("div");
+      listItemNode.classList.add("incdx-list-select-item", "incdx-selectable-item");
+      listItemNode.dataset.incdxSelect = listItem.title;
+      listItemNode.innerHTML += `
+        <div class="incdx-layout-row incdx-flex">
+          <div class="incdx-list-select-item-text incdx-layout-column incdx-flex-70">
+            <div class="incdx-list-select-item-title">${listItem.title}</div>
+            ${listItem.description.length ? `<span class="incdx-list-select-item-description">${listItem.description}</span>` : ""}
+          </div>
+          <div class="incdx-flex"></div>
+          <div class="incdx-list-select-item-image">
+            ${listItem.image.imageUri.length ? `<img src="${listItem.image.imageUri}" alt="${listItem.image.accessibilityText}" >` : ""}
           </div>
         </div>
       `;
+      listItemNode.onclick = incdxSelectableEvent;
+      listSelectNode.appendChild(listItemNode);
     });
     return listSelectNode;
   }
@@ -378,9 +393,21 @@ var incdxBot = (function () {
     botMessage.classList.add("chip-container");
     var suggestions = fulfillmentMessage.suggestions.suggestions;
     var suggestionsNode = document.createElement("div");
-    suggestionsNode.classList.add("incdx-suggestions-chips");
+    suggestionsNode.classList.add("incdx-suggestions-container");
     suggestions.forEach(suggestionChip => {
-      suggestionsNode.innerHTML += `<div class="incdx-chip-container"><button class="incdx-chip">${suggestionChip.title}</button></div>`;
+      var suggestionChipNode = document.createElement("div");
+      suggestionChipNode.dataset.incdxSelect = suggestionChip.title;
+      suggestionChipNode.classList.add("incdx-chip-container", "incdx-selectable-item");
+      var suggestionChipNodeButton = document.createElement("button");
+      suggestionChipNodeButton.classList.add("incdx-chip");
+      suggestionChipNodeButton.innerText = suggestionChip.title;
+      suggestionChipNode.appendChild(suggestionChipNodeButton);
+      suggestionChipNode.onclick = incdxSelectableEvent;
+      suggestionsNode.appendChild(suggestionChipNode);
+    });
+    // Add "incdx-suggestions-chips" class to suggestionsNode to prevent unclickable absolute div
+    setTimeout(() => {
+      suggestionsNode.classList.add("incdx-suggestions-chips");
     });
     return suggestionsNode;
   }
@@ -390,17 +417,21 @@ var incdxBot = (function () {
    * @function generator.linkOutSuggestion
    * @name linkOutSuggestion
    * @param {Object} fulfillmentMessage Fulfillment Message from Dialogfow
+   * @param {Node} botMessage BotMessage to add chip-container
    * @returns {Node} linkOutSuggestionNode
    */
   generator.linkOutSuggestion = (fulfillmentMessage, botMessage) => {
     var linkOutSuggestion = fulfillmentMessage.linkOutSuggestion;
-    var incdxSuggestionsChips = document.querySelectorAll(".incdx-suggestions-chips");
+    var incdxSuggestionsChips = document.querySelectorAll(".incdx-suggestions-container");
     if (incdxSuggestionsChips.length) {
-      incdxSuggestionsChips[incdxSuggestionsChips.length-1].innerHTML = `<div class="incdx-chip-container"><button class="incdx-chip incdx-link-out-chip" onclick="window.open('${linkOutSuggestion.uri}','_blank')">${linkOutSuggestion.destinationName} <i class="fa fa-link"></i></button></div>` + incdxSuggestionsChips[incdxSuggestionsChips.length-1].innerHTML;
+      var linkOutSuggestionNode = document.createElement("div");
+      linkOutSuggestionNode.classList.add("incdx-chip-container");
+      linkOutSuggestionNode.innerHTML = `<div class=""><button class="incdx-chip incdx-link-out-chip" onclick="window.open('${linkOutSuggestion.uri}','_blank')">${linkOutSuggestion.destinationName} <i class="fa fa-link"></i></button></div>`;
+      incdxSuggestionsChips[incdxSuggestionsChips.length-1].prepend(linkOutSuggestionNode);
     } else {
       botMessage.classList.add("chip-container");
       var linkOutSuggestionNode = document.createElement("div");
-      linkOutSuggestionNode.classList.add("incdx-suggestions-chips");
+      linkOutSuggestionNode.classList.add("incdx-suggestions-chipsincdx-suggestions-container");
       linkOutSuggestionNode.innerHTML = `<div class="incdx-chip-container"><button class="incdx-link-out-chip" onclick="window.open('${linkOutSuggestion.uri}','_blank')">${linkOutSuggestion.destinationName}</button></div>` + linkOutSuggestionNode.innerHTML;
       return linkOutSuggestionNode;
     }
@@ -416,7 +447,26 @@ var incdxBot = (function () {
   generator.carouselSelect = (fulfillmentMessage) => {
     var carouselSelect = fulfillmentMessage.carouselSelect;
     var carouselSelectNode = document.createElement("div");
-    // TODO
+    carouselSelectNode.classList.add("incdx-carousel-select");
+    carouselSelect.items.forEach(carouselItem => {
+      var carouselItemNode = document.createElement("div");
+      carouselItemNode.classList.add("incdx-carousel-select-item", "incdx-selectable-item");
+      carouselItemNode.dataset.incdxSelect = carouselItem.title;
+      carouselItemNode.innerHTML = `
+        <div class="incdx-layout-row incdx-flex">
+          <div class="incdx-carousel-select-item-text incdx-layout-column incdx-flex-70">
+            <div class="incdx-carousel-select-item-title">${carouselItem.title}</div>
+            ${carouselItem.description.length ? `<span class="incdx-carousel-select-item-description">${carouselItem.description}</span>` : ""}
+          </div>
+          <div class="incdx-flex"></div>
+          <div class="incdx-carousel-select-item-image">
+            ${carouselItem.image.imageUri.length ? `<img src="${carouselItem.image.imageUri}" alt="${carouselItem.image.accessibilityText}" >` : ""}
+          </div>
+        </div>
+      `;
+      carouselItemNode.onclick = incdxSelectableEvent;
+      carouselSelectNode.appendChild(carouselItemNode);
+    });
     return carouselSelectNode;
   }
 
