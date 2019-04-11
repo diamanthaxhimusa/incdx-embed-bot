@@ -20,8 +20,10 @@ Embed Bot
 
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options of BOT
     -   `options.microphone` **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Use the microphone (optional, default `true`)
-    -   `options.messageColor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Color of the messsage box (optional, default `#a5d175`)
-    -   `options.textColor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Color of the meesage text (optional, default `#fff`)
+    -   `options.primaryColor` **primaryColor** Color of the messsage box (optional, default `#3e4454`)
+    -   `options.darkColor` **darkColor** Color of the bot tools (optional, default `#2b303e`)
+    -   `options.acsentColor` **acsentColor** Acsent Color (light color) (optional, default `#676f84`)
+    -   `options.fontColor` **fontColor** Color of the meesage text (optional, default `#ffffff`)
 
 ### Examples
 
@@ -29,7 +31,9 @@ Embed Bot
 incdxBot.init({
   userToken: "",
   microphone: true,
-  messageColor: "blue",
-  textColor: "white"
+  primaryColor: "#3e4454",
+  darkColor: "#2b303e",
+  acsentColor: "#676f84",
+  fontColor: "#ffffff",
 });
 ```
