@@ -140,9 +140,9 @@
       /* font */
       color: white;
     }
-    .incdx-bot_header, #incdx-bot-open {
+    .incdx-bot_header, #incdx-bot-open, .incdx-bot *::-webkit-scrollbar-thumb {
       /* dark */
-      background-color: white;
+      background-color: #2b303e;
     }
     .incdx-list-select .incdx-list-select-item {
       border-color: white;
@@ -198,6 +198,7 @@
       // Change it if it exists
       for(var i = 0; i < stylesheet.cssRules.length; i++) {
           var rule = stylesheet.cssRules[i];
+          console.log('rule.selectorText', rule.selectorText)
           if(rule.selectorText === selector) {
             stylesheet.deleteRule(i);
             stylesheet.insertRule(selector + " { " + property + ": " + value + "!important; }", 0);
@@ -234,7 +235,7 @@
               case "dark":
               dark = inputValue;
               window.dark = inputValue;
-              changeStylesheetRule(sheet, ".incdx-bot_header, #incdx-bot-open", "background-color", inputValue);
+              changeStylesheetRule(sheet, ".incdx-bot_header, #incdx-bot-open, .incdx-bot ::-webkit-scrollbar-thumb", "background-color", inputValue);
               break;
             case "font":
               font = inputValue;
