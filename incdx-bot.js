@@ -11,6 +11,7 @@ var incdxBot = (function () {
   var incdxBotWrapper;
   var queryInput;
   var openBotButton;
+  var botFunctionsUrl = "https://us-central1-social-6e2cc.cloudfunctions.net/botFunction";
 
   window['addStyleString'] = function(str) {
     var node = document.createElement('style');
@@ -77,7 +78,10 @@ var incdxBot = (function () {
         sendMessage(message);
       }
     });
-    
+    var urlToIncdxBot = botFunctionsUrl + '/init';
+    incdxRequest(urlToIncdxBot, {"query": "message", "sessionId": "awd-a1-123-123121d-wd"})
+    .then((data) => botMessageResponse(data))
+    .catch((error) => console.log(error))
   }
 
   var webSpeech = function () {
@@ -161,8 +165,7 @@ var incdxBot = (function () {
    */
   var sendMessage = function (message) {
     // test url http://localhost:5000/listselectionsample/us-central1/botFunction
-    var options = window.incdxOptions;
-    var urlToIncdxBot = 'https://040c450b.ngrok.io/social-6e2cc/us-central1/botFunction';
+    var urlToIncdxBot = botFunctionsUrl;
     var botResultContainer = document.getElementById("incdx-result");
     var botLoadingContainer = document.getElementById("incdx-w-l");
     var resultWrapper = document.getElementById("resultWrapper");
@@ -192,26 +195,8 @@ var incdxBot = (function () {
       .then((data) => {
         console.log(data)
         if(loadingMessage) loadingMessage.remove();
-        // create bot mesasage content and display it to chat
-        var botMessage = document.createElement("div");
-            botMessage.classList.add("incdx-message-server-response", "incdx-bot-message-card");
-        botResultContainer.appendChild(botMessage);
-        var botMessageAvatar = document.createElement("div");
-            botMessageAvatar.classList.add("incdx-bot-avatar");
-            if (options.botAvatar) {
-              botMessageAvatar.style.backgroundImage = `url(${options.botAvatar})`;
-            } else {
-              botMessageAvatar.innerText = "B";
-            }
-        botMessage.appendChild(botMessageAvatar);
-        // Go through response list
-        data.fulfillmentMessages.forEach(fulfillmentMessage => {
-          console.log('fulfillmentMessage', fulfillmentMessage)
-          var type = fulfillmentMessage.message;
-          var nodeToAppend = generator[type](fulfillmentMessage, botResultContainer);
-          if (nodeToAppend)botMessage.appendChild(nodeToAppend);
-        });
-        resultWrapper.scrollTop = resultWrapper.scrollHeight;
+        // Call botMessageResponse
+        botMessageResponse(data);
       })
       .catch(error => {
         console.log(error)
@@ -222,6 +207,31 @@ var incdxBot = (function () {
         botResultContainer.appendChild(botMessage);
         resultWrapper.scrollTop = resultWrapper.scrollHeight;
       });
+  }
+
+  var botMessageResponse = function(data) {
+    // create bot mesasage content and display it to chat
+    var options = window.incdxOptions;
+    var botResultContainer = document.getElementById("incdx-result");
+    var botMessage = document.createElement("div");
+        botMessage.classList.add("incdx-message-server-response", "incdx-bot-message-card");
+        botResultContainer.appendChild(botMessage);
+    var botMessageAvatar = document.createElement("div");
+        botMessageAvatar.classList.add("incdx-bot-avatar");
+        if (options.botAvatar) {
+          botMessageAvatar.style.backgroundImage = `url(${options.botAvatar})`;
+        } else {
+          botMessageAvatar.innerText = "B";
+        }
+    botMessage.appendChild(botMessageAvatar);
+    // Go through response list
+    data.fulfillmentMessages.forEach(fulfillmentMessage => {
+      console.log('fulfillmentMessage', fulfillmentMessage)
+      var type = fulfillmentMessage.message;
+      var nodeToAppend = generator[type](fulfillmentMessage, botResultContainer);
+      if (nodeToAppend)botMessage.appendChild(nodeToAppend);
+    });
+    resultWrapper.scrollTop = resultWrapper.scrollHeight;
   }
 
   
