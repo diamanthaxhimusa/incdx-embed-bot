@@ -11,7 +11,7 @@ var incdxBot = (function () {
   var incdxBotWrapper;
   var queryInput;
   var openBotButton;
-  var botFunctionsUrl = "https://us-central1-social-6e2cc.cloudfunctions.net/botFunction";
+  var botFunctionsUrl = "https://us-central1-social-6e2cc.cloudfunctions.net/botFunction/";
 
   window['addStyleString'] = function(str) {
     var node = document.createElement('style');
@@ -78,7 +78,7 @@ var incdxBot = (function () {
         sendMessage(message);
       }
     });
-    var urlToIncdxBot = botFunctionsUrl + '/init';
+    var urlToIncdxBot = botFunctionsUrl + 'init';
     incdxRequest(urlToIncdxBot, {"query": "message", "sessionId": "awd-a1-123-123121d-wd"})
     .then((data) => botMessageResponse(data))
     .catch((error) => console.log(error))
