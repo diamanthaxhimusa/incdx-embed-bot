@@ -157,7 +157,7 @@ var incdxBot = (function () {
   var sendMessage = function (message) {
     // test url http://localhost:5000/listselectionsample/us-central1/botFunction
     var options = window.incdxOptions;
-    var urlToIncdxBot = 'http://localhost:5000/listselectionsample/us-central1/botFunction';
+    var urlToIncdxBot = 'https://040c450b.ngrok.io/listselectionsample/us-central1/botFunction';
     var botResultContainer = document.getElementById("incdx-result");
     var botLoadingContainer = document.getElementById("incdx-w-l");
     var resultWrapper = document.getElementById("resultWrapper");
@@ -183,7 +183,7 @@ var incdxBot = (function () {
     // scroll to bottom of chat
     resultWrapper.scrollTop = resultWrapper.scrollHeight;
     // Make request to firebase functions to return detected intent
-    incdxRequest(urlToIncdxBot, {"query": message})
+    incdxRequest(urlToIncdxBot, {"query": message, "sessionId": "39fafeaa-264f-47f3-bcd8-8030a03e686b"})
       .then((data) => {
         console.log(data)
         if(loadingMessage) loadingMessage.remove();
