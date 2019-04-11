@@ -98,29 +98,29 @@
       <h3>Bot configurations:</h3>
       <div class="bot-options">
         <label for="primary-color">Primary Color:</label>
-        <input class="input-color" type="color" data-color="primary" id="primary-color" name="primary-color" value="#FFFF00">
+        <input class="input-color" type="color" data-color="primary" id="primary-color" name="primary-color" value="#3e4454">
       </div>
       <div class="bot-options">
         <label for="dark-color">Dark Color:</label>
-        <input class="input-color" type="color" data-color="dark" id="dark-color" name="dark-color" value="#FFD600">
+        <input class="input-color" type="color" data-color="dark" id="dark-color" name="dark-color" value="#2b303e">
       </div>
       <div class="bot-options">
         <label for="light-color">Light Color:</label>
-        <input class="input-color" type="color" data-color="light" id="light-color" name="light-color" value="#FFFF8D">
+        <input class="input-color" type="color" data-color="light" id="light-color" name="light-color" value="#676f84">
       </div>
       <div class="bot-options">
         <label for="font-color">Font Color:</label>
-        <input class="input-color" type="color" data-color="font" id="font-color" name="font-color" value="#111">
+        <input class="input-color" type="color" data-color="font" id="font-color" name="font-color" value="#ffffff">
       </div>
     </div>
     <h3>Code:</h3>
     <div class="code">
       <div style="white-space: pre-line" id="code">incdxBot.init({
         &nbsp; microphone: <span style="color:blue">true</span>,
-        &nbsp; primaryColor: <span class="string">"#FFFF00"</span>,
-        &nbsp; darkColor: <span class="string">"#FFD600"</span>,
-        &nbsp; lightColor: <span class="string">"#FFFF8D"</span>,
-        &nbsp; fontColor: <span class="string">"#111"</span>
+        &nbsp; primaryColor: <span class="string">"#3e4454"</span>,
+        &nbsp; darkColor: <span class="string">"#2b303e"</span>,
+        &nbsp; acsentColor: <span class="string">"#676f84"</span>,
+        &nbsp; fontColor: <span class="string">"#ffffff"</span>
         });
       </div>
       <div class="tooltip">
@@ -138,7 +138,7 @@
     }
     .incdx-bot#incdx-bot-wrapper, #incdx-bot-open {
       /* font */
-      /* color: white; */
+      color: white;
     }
     .incdx-bot_header, #incdx-bot-open {
       /* dark */
@@ -154,17 +154,17 @@
       background-color: white;
     }
     .incdx-suggestions-chips .incdx-chip {
-      background-color: white;
+      /* background-color: white; */
     }
   </style>
   <script src="./incdx-bot.js"></script>
   <script>
       incdxBot.init({
         microphone: true,
-        fontColor: "#111",
-        primaryColor: "#FFFF00",
-        darkColor: "#FFD600",
-        lightColor: "#FFFF8D",
+        primaryColor: "#3e4454",
+        darkColor: "#2b303e",
+        acsentColor: "#676f84",
+        fontColor: "#ffffff",
       });
   </script>
   <script>
@@ -215,7 +215,7 @@
           var inputValue = this.value;
           var primary = window.primary || window.incdxOptions.primaryColor;
           var dark = window.dark || window.incdxOptions.darkColor;
-          var light = window.light || window.incdxOptions.lightColor;
+          var light = window.light || window.incdxOptions.acsentColor;
           var font = window.font || window.incdxOptions.fontColor;
           switch (inputData.color) {
             case "primary":
@@ -246,7 +246,7 @@
             \xa0\xa0microphone: <span style="color:blue">true</span>,
             \xa0\xa0primaryColor: <span class="string">"${primary}"</span>,
             \xa0\xa0darkColor: <span class="string">"${dark}"</span>,
-            \xa0\xa0lightColor: <span class="string">"${light}"</span>,
+            \xa0\xa0acsentColor: <span class="string">"${light}"</span>,
             \xa0\xa0fontColor: <span class="string">"${font}"</span>
           });`;
           var code = document.getElementById("code");
