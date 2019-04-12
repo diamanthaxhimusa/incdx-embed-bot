@@ -15,6 +15,9 @@
     type="text/css">
   <link href="https://cdn.jsdelivr.net/fontawesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <style>
+    html {
+      font-family: 'Roboto',sans-serif;
+    }
     body {
       display: flex;
       justify-content: center;
@@ -89,6 +92,12 @@
       visibility: visible;
       opacity: 1;
     }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin: 10px 0px;
+    }
   </style>
 </head>
 <body>
@@ -113,6 +122,8 @@
         <input class="input-color" type="color" data-color="font" id="font-color" name="font-color" value="#ffffff">
       </div>
     </div>
+    <h3>Download js:</h3>
+      <a href="./incdx-bot.js" target="_blank" rel="noopener noreferrer">incdx-bot.js</a>
     <h3>Code:</h3>
     <div class="code">
       <div style="white-space: pre-line" id="code">incdxBot.init({
@@ -130,6 +141,15 @@
             </button>
         </button>
       </div>
+    </div>
+    <div class="how-to">
+      <h3>Instructions:</h3>
+      <ul>
+        <li>Download <a href="./incdx-bot.js" target="_blank" rel="noopener noreferrer">incdx-bot.js</a></li>
+        <li>Import incdx-bot.js to your project <code>&lt;script src="path/to/incdx-bot.js"&gt;&lt;/script&gt;</code></li>
+        <li>Copy code from above and place it to a script under imported script from above</li>
+        <li>Horay!</li>
+      </ul>
     </div>
   <style>
     .incdx-message-server-response {

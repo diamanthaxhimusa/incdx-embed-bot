@@ -76,7 +76,7 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     position: fixed;
     width: 377px;
     height: 700px;
-    max-height: calc(100vh - 2 * 30px - 52px);
+    max-height: calc(100vh - 3 * 30px - 52px);
     border-radius: 16px;
     overflow: hidden;
     right: 40px;
@@ -175,6 +175,7 @@ button#incdx-bot-open.close-bot i:nth-child(2){
 }
 .incdx-bot .incdx-bot_result {
     overflow-y: auto;
+    overflow-x:hidden;
     background: #fff;
     position: absolute;
     top: 65px;
