@@ -198,7 +198,6 @@
       // Change it if it exists
       for(var i = 0; i < stylesheet.cssRules.length; i++) {
           var rule = stylesheet.cssRules[i];
-          console.log('rule.selectorText', rule.selectorText)
           if(rule.selectorText === selector) {
             stylesheet.deleteRule(i);
             stylesheet.insertRule(selector + " { " + property + ": " + value + "!important; }", 0);

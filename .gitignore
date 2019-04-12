@@ -1,0 +1,7 @@
+docs/
+test.html
+bot.js
+server.py
+out/
+jsdoc-conf.json
+.vscode/

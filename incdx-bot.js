@@ -80,7 +80,7 @@ var incdxBot = (function () {
     });
     var urlToIncdxBot = botFunctionsUrl + 'init';
     incdxRequest(urlToIncdxBot, {"query": "message", "sessionId": "awd-a1-123-123121d-wd"})
-    .then((data) => botMessageResponse(data))
+    .then((data) => generateBotMessage(data))
     .catch((error) => console.log(error))
   }
 
@@ -195,8 +195,8 @@ var incdxBot = (function () {
       .then((data) => {
         console.log(data)
         if(loadingMessage) loadingMessage.remove();
-        // Call botMessageResponse
-        botMessageResponse(data);
+        // Call generateBotMessage
+        generateBotMessage(data);
       })
       .catch(error => {
         console.log(error)
@@ -209,7 +209,7 @@ var incdxBot = (function () {
       });
   }
 
-  var botMessageResponse = function(data) {
+  var generateBotMessage = function(data) {
     // create bot mesasage content and display it to chat
     var options = window.incdxOptions;
     var botResultContainer = document.getElementById("incdx-result");
