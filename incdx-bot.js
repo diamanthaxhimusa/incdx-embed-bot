@@ -80,8 +80,11 @@ var incdxBot = (function () {
     });
     var urlToIncdxBot = botFunctionsUrl + 'init';
     incdxRequest(urlToIncdxBot, {"query": "message", "sessionId": "awd-a1-123-123121d-wd"})
-    .then((data) => generateBotMessage(data))
-    .catch((error) => console.log(error))
+    .then((data) => {
+      generateBotMessage(data);
+      console.log('data', data.fulfillmentMessages[0].simpleResponses.simpleResponses[0].textToSpeech)
+    })
+    .catch((error) => generateErrorBotMessage())
   }
 
   var webSpeech = function () {
@@ -149,6 +152,14 @@ var incdxBot = (function () {
         }
       });
     }
+    if (navigator.userAgent.indexOf('Mobile') !== -1) {
+      this.classList.add("incdx-bot-m");
+      incdxBotWrapper.classList.add("incdx-bot-m");
+    }
+    else {
+      this.classList.remove("incdx-bot-m");
+      incdxBotWrapper.classList.remove("incdx-bot-m");
+    }
     this.classList.toggle("close-bot");
   }
 
@@ -201,15 +212,12 @@ var incdxBot = (function () {
       .catch(error => {
         console.log(error)
         if(loadingMessage) loadingMessage.remove();
-        var botMessage = document.createElement("div");
-        botMessage.classList.add("incdx-message-server-response", "incdx-bot-message-card", "server-response-error");
-        botMessage.innerText = "Sorry, it seemed like there was an error during request.";
-        botResultContainer.appendChild(botMessage);
-        resultWrapper.scrollTop = resultWrapper.scrollHeight;
+        generateErrorBotMessage();
       });
   }
 
   var generateBotMessage = function(data) {
+    var resultWrapper = document.getElementById("resultWrapper");
     // create bot mesasage content and display it to chat
     var options = window.incdxOptions;
     var botResultContainer = document.getElementById("incdx-result");
@@ -231,6 +239,15 @@ var incdxBot = (function () {
       var nodeToAppend = generator[type](fulfillmentMessage, botResultContainer);
       if (nodeToAppend)botMessage.appendChild(nodeToAppend);
     });
+    resultWrapper.scrollTop = resultWrapper.scrollHeight;
+  }
+  var generateErrorBotMessage = function() {
+    var resultWrapper = document.getElementById("resultWrapper");
+    var botResultContainer = document.getElementById("incdx-result");
+    var botMessage = document.createElement("div");
+    botMessage.classList.add("incdx-message-server-response", "incdx-bot-message-card", "server-response-error");
+    botMessage.innerText = "Sorry, it seemed like there was an error during request.";
+    botResultContainer.appendChild(botMessage);
     resultWrapper.scrollTop = resultWrapper.scrollHeight;
   }
 
