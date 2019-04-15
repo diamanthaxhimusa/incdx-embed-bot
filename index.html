@@ -2,18 +2,18 @@
 <html>
 <head>
   <meta name="referrer" content="no-referrer">
-  <title>ListselectionSample</title>
+  <title>EmbedBot</title>
   <link rel="icon" type="image/png" href="https://console.dialogflow.com/api-client/assets/img/logo-short.png">
 
-  <meta property="og:title" content="ListselectionSample">
-  <meta property="og:description" content="">
+  <meta property="og:title" content="EmbedBot">
+  <meta property="og:description" content="INCDX embed bot">
   <meta property="og:locale" content="en">
-  <meta property="og:image" content="">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,300&amp;subset=latin,cyrillic" rel="stylesheet"
     type="text/css">
   <link href="https://cdn.jsdelivr.net/fontawesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="./style.css">
   <style>
     html {
       font-family: 'Roboto',sans-serif;
@@ -24,13 +24,16 @@
       align-items: center;
       width: 100%;
       min-height: 100vh;
+      overflow-x: hidden;
     }
     .incdx-bot {
       font-family: 'Roboto', sans-serif;
     }
     .container {
       display: flex;
-      flex-direction: column
+      flex-direction: column;
+      padding: 20px;
+      max-width: 100%;
     }
     .code {
       background: #f1f1f1;
@@ -42,7 +45,7 @@
     .bot-options {
       display: flex;
       align-items: center;
-      justify-content: center;
+      padding-left: 20px;
       margin-bottom: 10px;
     }
     .bot-options label {
@@ -51,8 +54,12 @@
     .bot-options input {
       width: 70px
     }
+    #input-avatar {
+      width: 200px;
+    }
     .string {
       color: #d6a10e;
+      word-break: break-word;
     }
     .tooltip {
       position: absolute;
@@ -106,6 +113,14 @@
     <div class="bot-configurations">
       <h3>Bot configurations:</h3>
       <div class="bot-options">
+        <label for="primary-color">Bot Avatar:</label>
+        <input class="input-avatar" id="input-mic" type="checkbox" value="checked" checked>
+      </div>
+      <div class="bot-options">
+        <label for="primary-color">Bot Avatar:</label>
+        <input class="input-avatar" id="input-avatar" type="text" value="https://www.shareicon.net/data/256x256/2016/09/15/829465_user_512x512.png">
+      </div>
+      <div class="bot-options">
         <label for="primary-color">Primary Color:</label>
         <input class="input-color" type="color" data-color="primary" id="primary-color" name="primary-color" value="#3e4454">
       </div>
@@ -127,11 +142,12 @@
     <h3>Code:</h3>
     <div class="code">
       <div style="white-space: pre-line" id="code">incdxBot.init({
-        &nbsp; microphone: <span style="color:blue">true</span>,
-        &nbsp; primaryColor: <span class="string">"#3e4454"</span>,
-        &nbsp; darkColor: <span class="string">"#2b303e"</span>,
-        &nbsp; acsentColor: <span class="string">"#676f84"</span>,
-        &nbsp; fontColor: <span class="string">"#ffffff"</span>
+        &nbsp;&nbsp;&nbsp; botAvatar: <span class="string">"https://www.shareicon.net/data/256x256/2016/09/15/829465_user_512x512.png"</span>,
+        &nbsp;&nbsp;&nbsp; microphone: <span style="color:blue">true</span>,
+        &nbsp;&nbsp;&nbsp; primaryColor: <span class="string">"#3e4454"</span>,
+        &nbsp;&nbsp;&nbsp; darkColor: <span class="string">"#2b303e"</span>,
+        &nbsp;&nbsp;&nbsp; acsentColor: <span class="string">"#676f84"</span>,
+        &nbsp;&nbsp;&nbsp; fontColor: <span class="string">"#ffffff"</span>
         });
       </div>
       <div class="tooltip">
@@ -151,6 +167,7 @@
         <li>Horay!</li>
       </ul>
     </div>
+  </div>
   <style>
     .incdx-message-server-response {
       /* primary */
@@ -176,11 +193,19 @@
     .incdx-suggestions-chips .incdx-chip {
       /* background-color: white; */
     }
+    #incdx-bot-mic {
+      display: flex;
+    }
+    .incdx-bot-avatar {
+      background-image: url("https://www.shareicon.net/data/256x256/2016/09/15/829465_user_512x512.png")
+    }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
   <script src="./incdx-bot.js"></script>
   <script>
       incdxBot.init({
         microphone: true,
+        botAvatar: "https://www.shareicon.net/data/256x256/2016/09/15/829465_user_512x512.png",
         primaryColor: "#3e4454",
         darkColor: "#2b303e",
         acsentColor: "#676f84",
@@ -228,6 +253,13 @@
     document.addEventListener("DOMContentLoaded", function () {
       var sheets = document.styleSheets;
       var sheet = sheets[sheets.length-1];
+      window.microphone = window.incdxOptions.microphone;
+      window.botAvatar = window.incdxOptions.botAvatar;
+      window.primary = window.incdxOptions.primaryColor;
+      window.dark = window.incdxOptions.darkColor;
+      window.acsent = window.incdxOptions.acsentColor;
+      window.font = window.incdxOptions.fontColor;
+
       var colorInputs = document.getElementsByClassName("input-color");
       for (let colorInput of colorInputs) {
         colorInput.onchange = function() {
@@ -262,18 +294,34 @@
               changeStylesheetRule(sheet, ".incdx-bot#incdx-bot-wrapper, #incdx-bot-open", "color", inputValue);
               break;
           }
-          var str = `incdxBot.init({
-            \xa0\xa0microphone: <span style="color:blue">true</span>,
-            \xa0\xa0primaryColor: <span class="string">"${primary}"</span>,
-            \xa0\xa0darkColor: <span class="string">"${dark}"</span>,
-            \xa0\xa0acsentColor: <span class="string">"${acsent}"</span>,
-            \xa0\xa0fontColor: <span class="string">"${font}"</span>
-          });`;
-          var code = document.getElementById("code");
-          code.innerHTML = str;
+          generateCode();
         };
       }
+      var avatarInput = document.getElementById("input-avatar");
+      avatarInput.onchange = function () {
+        changeStylesheetRule(sheet, ".incdx-bot-avatar", "background-image", `url("${this.value}")`);
+        window.botAvatar = this.value;
+        generateCode();
+      }
+      var micInput = document.getElementById("input-mic");
+      micInput.onchange = function () {
+        changeStylesheetRule(sheet, "#incdx-bot-mic", "display", this.checked ? 'flex':'none');
+        window.microphone = this.checked;
+        generateCode();
+      }
     })
+    function generateCode() {
+      var str = `incdxBot.init({
+            \xa0\xa0\xa0botAvatar: <span class="string">"${window.botAvatar}"</span>,
+            \xa0\xa0\xa0microphone: <span style="color:blue">${window.microphone}</span>,
+            \xa0\xa0\xa0primaryColor: <span class="string">"${window.primary}"</span>,
+            \xa0\xa0\xa0darkColor: <span class="string">"${window.dark}"</span>,
+            \xa0\xa0\xa0acsentColor: <span class="string">"${window.acsent}"</span>,
+            \xa0\xa0\xa0fontColor: <span class="string">"${window.font}"</span>
+          });`;
+      var code = document.getElementById("code");
+      code.innerHTML = str;
+    }
   </script>
 </body>
 </html>

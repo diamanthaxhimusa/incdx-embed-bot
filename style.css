@@ -71,6 +71,56 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     opacity: 1;
 }
 
+.incdx-bot#incdx-bot-wrapper.incdx-bot-m {
+    height: 100vh;
+    max-height: 100%;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-radius: 0;
+}
+button#incdx-bot-open.close-bot.incdx-bot-m {
+  top: 0;
+  margin: 0;
+  box-shadow: none;
+}
+
+.incdx-bot#incdx-bot-wrapper .incdx-bot_header-options {
+    position: relative;
+    padding: 10px;
+    margin-right: 0px;
+    z-index: 1;
+    user-select: none;
+}
+
+.incdx-bot#incdx-bot-wrapper #incdx-bot_header-options-popup {
+    position: absolute;
+    background: #ffffff;
+    color: #111;
+    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.15);
+    right: 0;
+    top: 40px;
+    width: 150px;
+    border-radius: 10px;
+    display: none;
+}
+.incdx-bot#incdx-bot-wrapper #incdx-bot_header-options-popup.show {
+    display: block;
+}
+
+.incdx-bot-m .incdx-bot_header-options {
+    margin-right: 60px !important;
+}
+.incdx-bot#incdx-bot-wrapper button#incdx-bot_header-options-toggler {
+    color: #fff;
+    outline: none !important;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
 .incdx-bot#incdx-bot-wrapper {
     font-family: 'Roboto', sans-serif;
     position: fixed;
@@ -91,6 +141,7 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     height: 0;
     width: 0;
     opacity: 0;
+    right: 0;
     bottom: 60px;
     right: 40px;
     z-index: 10001;
@@ -185,7 +236,6 @@ button#incdx-bot-open.close-bot i:nth-child(2){
 .incdx-bot .incdx-bot_header {
     min-height: 65px;
     height: 65px;
-    overflow: hidden;
     position: absolute;
     top: 0;
     width: 100%;
@@ -195,10 +245,11 @@ button#incdx-bot-open.close-bot i:nth-child(2){
 .incdx-bot .incdx-bot_header .incdx-bot_header-wrapper {
     height: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    padding: 0px 10px;
 }
-.incdx-bot .incdx-bot_header .incdx-bot_header-wrapper .incdx-bot_header_header-agent-name {
+.incdx-bot .incdx-bot_header .incdx-bot_header-wrapper .incdx-bot_header-agent-name {
     color: inherit !important;
     font-size: 1.2em;
 }
@@ -211,9 +262,8 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     width: 100%;
 }
 .incdx-bot #incdx-bot-form {
-    display: block;
-    margin-left: 15px;
-    margin-right: 110px;
+    display: flex;
+    padding-left: 15px;
     height: 100%;
     background: inherit !important;
 }
@@ -230,12 +280,10 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     box-shadow: none !important;
 }
 .incdx-bot #incdx-bot-form #incdx-bot-submit, .incdx-bot #incdx-bot-mic {
-    position: absolute;
     font-size: 20px;
+    min-width: 54px !important;
     width: 54px !important;
     height: 54px !important;
-    top: 0;
-    bottom: 0;
     cursor: pointer;
     text-align: center;
     line-height: 30px;
@@ -247,12 +295,6 @@ button#incdx-bot-open.close-bot i:nth-child(2){
     justify-content: center;
     align-items: center;
     padding: 0px !important;
-}
-.incdx-bot #incdx-bot-form #incdx-bot-submit {
-    right: 54px;
-}
-.incdx-bot #incdx-bot-mic {
-    right: 0;
 }
 #incdx-bot-mic.active #incdx-bot-mic-icon{
     display: none;
@@ -586,20 +628,4 @@ button#incdx-bot-open.close-bot i:nth-child(2){
 .incdx-list-select h2 {
     font-size: 1.5em;
     margin: 10px 0;
-}
-
-.incdx-bot#incdx-bot-wrapper.incdx-bot-m {
-    height: 100vh;
-    max-height: 100%;
-    width: 100%;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    border-radius: 0;
-}
-button#incdx-bot-open.close-bot.incdx-bot-m {
-  top: 0;
-  margin: 0;
-  box-shadow: none;
 }
